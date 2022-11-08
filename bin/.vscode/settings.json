@@ -1,0 +1,14 @@
+{
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar",
+            "bin/**/*.jar"
+        ],
+        "exclude": [
+            "bin/javax.activation-1.2.0.jar",
+            "bin/javax.mail.jar",
+            "bin/lib/javax.activation-1.2.0.jar",
+            "bin/lib/javax.mail.jar"
+        ]
+    }
+}
