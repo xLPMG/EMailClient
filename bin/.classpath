@@ -7,7 +7,7 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry excluding="src/" kind="src" path=""/>
-	<classpathentry kind="lib" path="/Users/lpmg/eclipse-workspace/E-Mail_Client/bin/lib/javax.activation-1.2.0.jar"/>
-	<classpathentry kind="lib" path="/Users/lpmg/eclipse-workspace/E-Mail_Client/bin/lib/javax.mail.jar"/>
+	<classpathentry kind="lib" path="src/lib/javax.activation-1.2.0.jar"/>
+	<classpathentry kind="lib" path="src/lib/javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
