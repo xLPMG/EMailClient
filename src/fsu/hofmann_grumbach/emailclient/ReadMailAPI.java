@@ -21,6 +21,7 @@ public class ReadMailAPI {
 		String serverPort;
 		String user;
 		String pass;
+		
 		System.out.println("Read mails using java mail API.");
 		try {
 			BufferedReader userInput;
@@ -40,25 +41,24 @@ public class ReadMailAPI {
 			}
 
 			Properties properties = new Properties();
-
 			properties.put("mail.pop3.host", serverAdress);
 			properties.put("mail.pop3.port", serverPort);
-
-			properties.put("mail.pop3.starttls.enable", "true");
+			
 			Session emailSession = Session.getDefaultInstance(properties);
-
 			Store store = emailSession.getStore("pop3s");
-
-			store.connect("pop3.uni-jena.de", user, pass);
+			store.connect(serverAdress, user, pass);
 
 			Folder inboxFolder = store.getFolder("INBOX");
+			 if (inboxFolder == null) {
+		            throw new Exception("Invalid folder");
+		        }
 			inboxFolder.open(Folder.READ_ONLY);
 
 			Message[] messages = inboxFolder.getMessages();
 			System.out.println(messages.length+" messages found.");
 			System.out.println("Commands: LIST; RETR ALL; RETR <number>; QUIT");
 			while (true) {
-				System.out.print("Input:");
+				System.out.print("IN:");
 				String cmd = userInput.readLine();
 
 				if (cmd.toLowerCase().startsWith("list")) {
