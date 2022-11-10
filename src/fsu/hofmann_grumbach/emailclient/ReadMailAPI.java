@@ -61,7 +61,6 @@ public class ReadMailAPI {
 
 			Message[] messages = inboxFolder.getMessages();
 			System.out.println(messages.length + " messages found.");
-			System.out.println("Commands: LIST; RETR ALL; RETR <number>; QUIT");
 			while (true) {
 				System.out.print("IN:");
 				String cmd = userInput.readLine();
@@ -78,7 +77,7 @@ public class ReadMailAPI {
 						int i = Integer.parseInt(id);
 						Message message = messages[i];
 						System.out.println("#########################################################");
-						System.out.println("Email #" + (i));
+						System.out.println("Email #" + (i + 1));
 						System.out.println("Subject: " + message.getSubject());
 						System.out.println("From: " + message.getFrom()[0]);
 						
@@ -107,7 +106,9 @@ public class ReadMailAPI {
 					} else {
 						System.out.println("Error: Wrong syntax.");
 					}
-				} else if (cmd.toLowerCase().equals("quit"))
+				} else if(cmd.equalsIgnoreCase("help")){
+					System.out.println("Commands: LIST; RETR ALL; RETR <number>; QUIT");
+				} else if (cmd.equalsIgnoreCase("quit"))
 					break;
 			}
 

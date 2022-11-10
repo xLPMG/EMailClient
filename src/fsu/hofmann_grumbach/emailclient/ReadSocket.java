@@ -12,7 +12,7 @@ public class ReadSocket {
 
 	public void start() {
 		String serverAdress = "";
-		int serverPort = 0;
+		int serverPort;
 
 		Socket client = null;
 		System.out.println("Read mails using sockets.");
@@ -29,7 +29,7 @@ public class ReadSocket {
 			if (!portStr.matches("[0-9]+")) {return;}
 			serverPort = Integer.parseInt(portStr);
 			
-			if(serverAdress.equals("")||serverPort==0) {
+			if(serverAdress.equals("")) {
 				return;
 			}
 			
@@ -45,26 +45,25 @@ public class ReadSocket {
 
 			//accept user commands until user quits:
 			while (true) {
-				System.out.print("Client:");
+				System.out.print("IN:");
 				String userInput = stdin.readLine();
 				sockout.println(userInput);
 
 				String serverOutput = sockin.readLine();
-				System.out.println("Server:" + serverOutput);
+				System.out.println("OUT:" + serverOutput);
 
 				//commands retr and list require a multi-line output
-				if ((userInput.toLowerCase().startsWith("retr") || userInput.toLowerCase().startsWith("list"))
+				if ((userInput.toLowerCase().startsWith("retr") || userInput.equalsIgnoreCase("list"))
 						&& serverOutput.charAt(0) == '+')
-					do {
+					while (true) {
 						serverOutput = sockin.readLine();
-						System.out.println(serverOutput);
 						if (serverOutput != null && serverOutput.length() > 0)
 							if (serverOutput.charAt(0) == '.')
 								break;
-					} while (true);
-
+						System.out.println(serverOutput);
+					}
 				//quit loop
-				if (userInput.toLowerCase().startsWith("quit"))
+				if (userInput.equalsIgnoreCase("quit"))
 					break;
 			}
 		} catch (IOException e) {
