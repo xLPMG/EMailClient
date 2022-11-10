@@ -1,6 +1,9 @@
 package fsu.hofmann_grumbach.emailclient;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Properties;
@@ -21,7 +24,7 @@ public class ReadMailAPI {
 		String serverPort;
 		String user;
 		String pass;
-		
+
 		System.out.println("Read mails using java mail API.");
 		try {
 			BufferedReader userInput;
@@ -36,32 +39,34 @@ public class ReadMailAPI {
 			System.out.print("PASS:");
 			pass = userInput.readLine();
 
-			if (serverAdress.equals("") || serverPort.equals("") || user.equals("") || pass.equals("")) {
+			if (serverAdress.equals("") || !serverPort.matches("[0-9]+") || user.equals("") || pass.equals("")) {
+				System.out.println("Error: Wrong input.");
 				return;
 			}
 
 			Properties properties = new Properties();
 			properties.put("mail.pop3.host", serverAdress);
 			properties.put("mail.pop3.port", serverPort);
-			
+
 			Session emailSession = Session.getDefaultInstance(properties);
+			// use pop3s instead of pop3 to enable ssl/tls encryption
 			Store store = emailSession.getStore("pop3s");
 			store.connect(serverAdress, user, pass);
 
 			Folder inboxFolder = store.getFolder("INBOX");
-			 if (inboxFolder == null) {
-		            throw new Exception("Invalid folder");
-		        }
+			if (inboxFolder == null) {
+				throw new Exception("Invalid folder");
+			}
 			inboxFolder.open(Folder.READ_ONLY);
 
 			Message[] messages = inboxFolder.getMessages();
-			System.out.println(messages.length+" messages found.");
+			System.out.println(messages.length + " messages found.");
 			System.out.println("Commands: LIST; RETR ALL; RETR <number>; QUIT");
 			while (true) {
 				System.out.print("IN:");
 				String cmd = userInput.readLine();
 
-				if (cmd.toLowerCase().startsWith("list")) {
+				if (cmd.toLowerCase().equals("list")) {
 					for (int i = 0, n = messages.length; i < n; i++) {
 						Message message = messages[i];
 						System.out.println("#" + i + ", Subject: " + message.getSubject());
@@ -72,11 +77,11 @@ public class ReadMailAPI {
 
 						int i = Integer.parseInt(id);
 						Message message = messages[i];
-						System.out.println("######################################################");
+						System.out.println("#########################################################");
 						System.out.println("Email #" + (i));
 						System.out.println("Subject: " + message.getSubject());
-
 						System.out.println("From: " + message.getFrom()[0]);
+						
 						if (message.getContent() instanceof Multipart) {
 							System.out.println("Content: ");
 							writeContent((Multipart) message.getContent());
@@ -86,11 +91,12 @@ public class ReadMailAPI {
 					} else if (id.equalsIgnoreCase("all")) {
 						for (int i = 0, n = messages.length; i < n; i++) {
 							Message message = messages[i];
-							System.out.println("######################################################");
+							System.out.println("#########################################################");
 							System.out.println("Email #" + (i + 1));
 							System.out.println("Subject: " + message.getSubject());
 
 							System.out.println("From: " + message.getFrom()[0]);
+							
 							if (message.getContent() instanceof Multipart) {
 								System.out.println("Content: ");
 								writeContent((Multipart) message.getContent());
@@ -99,8 +105,10 @@ public class ReadMailAPI {
 							}
 
 						}
+					} else {
+						System.out.println("Error: Wrong syntax.");
 					}
-				} else if (cmd.toLowerCase().startsWith("quit"))
+				} else if (cmd.toLowerCase().equals("quit"))
 					break;
 			}
 
@@ -125,7 +133,7 @@ public class ReadMailAPI {
 			} else if (bodyPart.getContentType().toString().contains("text/plain")) {
 				System.out.println(content.toString());
 			} else if (bodyPart.getContentType().toString().contains("image/jpeg")) {
-				System.out.println("Warning: E-Mail contains image");
+				System.out.println("Warning: E-Mail contains image:");
 			} else if (bodyPart.getContentType().toString().contains("application")) {
 				System.out.println("Warning: E-Mail contains additional attachment");
 			}
