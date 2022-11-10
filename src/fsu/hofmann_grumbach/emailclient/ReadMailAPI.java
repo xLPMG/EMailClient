@@ -61,11 +61,12 @@ public class ReadMailAPI {
 
 			Message[] messages = inboxFolder.getMessages();
 			System.out.println(messages.length + " messages found.");
+			
 			while (true) {
 				System.out.print("IN:");
 				String cmd = userInput.readLine();
 
-				if (cmd.toLowerCase().equals("list")) {
+				if (cmd.equalsIgnoreCase("list")) {
 					for (int i = 0, n = messages.length; i < n; i++) {
 						Message message = messages[i];
 						System.out.println("#" + i + ", Subject: " + message.getSubject());
