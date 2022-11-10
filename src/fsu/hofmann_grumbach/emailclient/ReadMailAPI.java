@@ -1,11 +1,10 @@
 package fsu.hofmann_grumbach.emailclient;
 
-import java.awt.Desktop;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.BodyPart;
@@ -16,6 +15,7 @@ import javax.mail.Multipart;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
+import javax.mail.internet.MimeMultipart;
 
 public class ReadMailAPI {
 
@@ -94,7 +94,6 @@ public class ReadMailAPI {
 							System.out.println("#########################################################");
 							System.out.println("Email #" + (i + 1));
 							System.out.println("Subject: " + message.getSubject());
-
 							System.out.println("From: " + message.getFrom()[0]);
 							
 							if (message.getContent() instanceof Multipart) {
@@ -133,9 +132,9 @@ public class ReadMailAPI {
 			} else if (bodyPart.getContentType().toString().contains("text/plain")) {
 				System.out.println(content.toString());
 			} else if (bodyPart.getContentType().toString().contains("image/jpeg")) {
-				System.out.println("Warning: E-Mail contains image:");
+				System.out.println("Warning: E-Mail contains image.");
 			} else if (bodyPart.getContentType().toString().contains("application")) {
-				System.out.println("Warning: E-Mail contains additional attachment");
+				System.out.println("Warning: E-Mail contains additional attachment.");
 			}
 		}
 	}
