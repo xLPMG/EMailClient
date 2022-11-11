@@ -75,6 +75,9 @@ public class ReadMailAPI {
 					String id = cmd.toLowerCase().replace("retr ", "");
 					if (id.matches("[0-9]+")) {
 						int i = Integer.parseInt(id);
+						if(i >= messages.length) {
+							System.out.println("invalid input number");
+						} else {
 						printMessage(messages, i);
 					} else if (id.equalsIgnoreCase("all")) {
 						for (int i = 0, n = messages.length; i < n; i++) {
