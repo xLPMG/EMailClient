@@ -66,7 +66,7 @@ public class ReadMailAPI {
 				if (cmd.equalsIgnoreCase("list")) {
 					for (int i = 0, n = messages.length; i < n; i++) {
 						Message message = messages[i];
-						System.out.println("#" + i+1 + ", Subject: " + message.getSubject());
+						System.out.println("#" + i + ", Subject: " + message.getSubject());
 					}
 				} else if (cmd.toLowerCase().startsWith("retr")) {
 					String id = cmd.toLowerCase().replace("retr ", "");
@@ -76,6 +76,7 @@ public class ReadMailAPI {
 							System.out.println("invalid input number");
 						} else {
 						printMessage(messages, i);
+						}
 					} else if (id.equalsIgnoreCase("all")) {
 						for (int i = 0, n = messages.length; i < n; i++) {
 							printMessage(messages, i);
