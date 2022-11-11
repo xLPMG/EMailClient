@@ -3,8 +3,6 @@ package fsu.hofmann_grumbach.emailclient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import javax.mail.BodyPart;
@@ -15,7 +13,6 @@ import javax.mail.Multipart;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
-import javax.mail.internet.MimeMultipart;
 
 public class ReadMailAPI {
 
@@ -69,7 +66,7 @@ public class ReadMailAPI {
 				if (cmd.equalsIgnoreCase("list")) {
 					for (int i = 0, n = messages.length; i < n; i++) {
 						Message message = messages[i];
-						System.out.println("#" + i+1 + ", Subject: " + message.getSubject());
+						System.out.println("#" + i + ", Subject: " + message.getSubject());
 					}
 				} else if (cmd.toLowerCase().startsWith("retr")) {
 					String id = cmd.toLowerCase().replace("retr ", "");
@@ -79,6 +76,7 @@ public class ReadMailAPI {
 							System.out.println("invalid input number");
 						} else {
 						printMessage(messages, i);
+						}
 					} else if (id.equalsIgnoreCase("all")) {
 						for (int i = 0, n = messages.length; i < n; i++) {
 							printMessage(messages, i);
