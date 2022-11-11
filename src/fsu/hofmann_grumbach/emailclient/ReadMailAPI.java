@@ -109,8 +109,10 @@ public class ReadMailAPI {
 					}
 				} else if(cmd.equalsIgnoreCase("help")){
 					System.out.println("Commands: LIST; RETR ALL; RETR <number>; QUIT");
-				} else if (cmd.equalsIgnoreCase("quit"))
+				} else if (cmd.equalsIgnoreCase("quit")) {
+					System.out.println("disconnected");
 					break;
+				}
 			}
 
 			inboxFolder.close(false);
