@@ -63,8 +63,10 @@ public class ReadSocket {
 						System.out.println(serverOutput);
 					}
 				//quit loop
-				if (userInput.equalsIgnoreCase("quit"))
+				if (userInput.equalsIgnoreCase("quit")) {
+					System.out.println("disconnected");
 					break;
+				}
 			}
 		} catch (IOException e) {
 			System.out.println(e.toString());
