@@ -74,20 +74,24 @@ public class ReadMailAPI {
 				} else if (cmd.toLowerCase().startsWith("retr")) {
 					String id = cmd.toLowerCase().replace("retr ", "");
 					if (id.matches("[0-9]+")) {
-
 						int i = Integer.parseInt(id);
-						Message message = messages[i];
-						System.out.println("#########################################################");
-						System.out.println("Email #" + (i + 1));
-						System.out.println("Subject: " + message.getSubject());
-						System.out.println("From: " + message.getFrom()[0]);
-						
-						if (message.getContent() instanceof Multipart) {
-							System.out.println("Content: ");
-							writeContent((Multipart) message.getContent());
+						if(i >= messages.length) {
+							System.out.println("invalid input number");
 						} else {
-							System.out.println("Content: " + message.getContent().toString());
-						}
+							
+							Message message = messages[i];
+							System.out.println("#########################################################");
+							System.out.println("Email #" + (i + 1));
+							System.out.println("Subject: " + message.getSubject());
+							System.out.println("From: " + message.getFrom()[0]);
+							
+							if (message.getContent() instanceof Multipart) {
+								System.out.println("Content: ");
+								writeContent((Multipart) message.getContent());
+							} else {
+								System.out.println("Content: " + message.getContent().toString());
+							}
+					    }
 					} else if (id.equalsIgnoreCase("all")) {
 						for (int i = 0, n = messages.length; i < n; i++) {
 							Message message = messages[i];
