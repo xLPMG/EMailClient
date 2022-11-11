@@ -61,7 +61,7 @@ public class ReadMailAPI {
 
 			Message[] messages = inboxFolder.getMessages();
 			System.out.println(messages.length + " messages found.");
-			
+
 			while (true) {
 				System.out.print("IN:");
 				String cmd = userInput.readLine();
@@ -69,7 +69,7 @@ public class ReadMailAPI {
 				if (cmd.equalsIgnoreCase("list")) {
 					for (int i = 0, n = messages.length; i < n; i++) {
 						Message message = messages[i];
-						System.out.println("#" + i + ", Subject: " + message.getSubject());
+						System.out.println("#" + i+1 + ", Subject: " + message.getSubject());
 					}
 				} else if (cmd.toLowerCase().startsWith("retr")) {
 					String id = cmd.toLowerCase().replace("retr ", "");
@@ -78,40 +78,15 @@ public class ReadMailAPI {
 						if(i >= messages.length) {
 							System.out.println("invalid input number");
 						} else {
-							
-							Message message = messages[i];
-							System.out.println("#########################################################");
-							System.out.println("Email #" + (i + 1));
-							System.out.println("Subject: " + message.getSubject());
-							System.out.println("From: " + message.getFrom()[0]);
-							
-							if (message.getContent() instanceof Multipart) {
-								System.out.println("Content: ");
-								writeContent((Multipart) message.getContent());
-							} else {
-								System.out.println("Content: " + message.getContent().toString());
-							}
-					    }
+						printMessage(messages, i);
 					} else if (id.equalsIgnoreCase("all")) {
 						for (int i = 0, n = messages.length; i < n; i++) {
-							Message message = messages[i];
-							System.out.println("#########################################################");
-							System.out.println("Email #" + (i + 1));
-							System.out.println("Subject: " + message.getSubject());
-							System.out.println("From: " + message.getFrom()[0]);
-							
-							if (message.getContent() instanceof Multipart) {
-								System.out.println("Content: ");
-								writeContent((Multipart) message.getContent());
-							} else {
-								System.out.println("Content: " + message.getContent().toString());
-							}
-
+							printMessage(messages, i);
 						}
 					} else {
 						System.out.println("Error: Wrong syntax.");
 					}
-				} else if(cmd.equalsIgnoreCase("help")){
+				} else if (cmd.equalsIgnoreCase("help")) {
 					System.out.println("Commands: LIST; RETR ALL; RETR <number>; QUIT");
 				} else if (cmd.equalsIgnoreCase("quit")) {
 					System.out.println("disconnected");
@@ -128,6 +103,21 @@ public class ReadMailAPI {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void printMessage(Message[] messages, int id) throws MessagingException, IOException {
+		Message message = messages[id];
+		System.out.println("###########################################################");
+		System.out.println("Email #" + (id + 1));
+		System.out.println("Subject: " + message.getSubject());
+		System.out.println("From: " + message.getFrom()[0]);
+
+		if (message.getContent() instanceof Multipart) {
+			System.out.println("Content: ");
+			writeContent((Multipart) message.getContent());
+		} else {
+			System.out.println("Content: " + message.getContent().toString());
 		}
 	}
 
