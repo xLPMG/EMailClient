@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.stream.Stream;
 
 public class ReadSocket {
 
@@ -17,7 +18,7 @@ public class ReadSocket {
 		Socket client = null;
 		System.out.println("Read mails using sockets.");
 		try {
-			//read user input using BufferedReader
+			// read user input using BufferedReader
 			BufferedReader stdin;
 			stdin = new BufferedReader(new InputStreamReader(System.in));
 
@@ -25,25 +26,29 @@ public class ReadSocket {
 			serverAdress = stdin.readLine();
 			System.out.print("Port:");
 			String portStr = stdin.readLine();
-			//check if port is a number and that the adress isnt empty
-			if (!portStr.matches("[0-9]+")) {return;}
-			serverPort = Integer.parseInt(portStr);
-			
-			if(serverAdress.equals("")) {
+			// check if port is a number and that the adress isnt empty
+			if (!portStr.matches("[0-9]+")) {
+				System.out.println("Error: Port input is not a number");
 				return;
 			}
-			
-			//initiate new client with specified adress and port
+			serverPort = Integer.parseInt(portStr);
+
+			if (serverAdress.equals("")) {
+				System.out.println("Error: Please provide a server adress");
+				return;
+			}
+
+			// initiate new client with specified adress and port
 			client = new Socket(serverAdress, serverPort);
 
-			//define input- and output stream for client-server connection
+			// define input- and output stream for client-server connection
 			InputStream is = client.getInputStream();
 			BufferedReader sockin = new BufferedReader(new InputStreamReader(is));
 
 			OutputStream os = client.getOutputStream();
 			PrintWriter sockout = new PrintWriter(os, true);
 
-			//accept user commands until user quits:
+			// accept user commands until user quits:
 			while (true) {
 				System.out.print("IN:");
 				String userInput = stdin.readLine();
@@ -52,19 +57,20 @@ public class ReadSocket {
 				String serverOutput = sockin.readLine();
 				System.out.println("OUT:" + serverOutput);
 
-				//commands retr and list require a multi-line output
+				// commands retr and list require a multi-line output	
 				if ((userInput.toLowerCase().startsWith("retr") || userInput.equalsIgnoreCase("list"))
 						&& serverOutput.charAt(0) == '+')
 					while (true) {
 						serverOutput = sockin.readLine();
-						if (serverOutput != null && serverOutput.length() > 0)
+						if (serverOutput != null && serverOutput.length() == 1)
 							if (serverOutput.charAt(0) == '.')
 								break;
 						System.out.println(serverOutput);
 					}
-				//quit loop
+
+				// quit loop
 				if (userInput.equalsIgnoreCase("quit")) {
-					System.out.println("disconnected");
+					System.out.println("Disconnected");
 					break;
 				}
 			}
@@ -72,8 +78,6 @@ public class ReadSocket {
 			System.out.println(e.toString());
 		} finally {
 			try {
-				//close connection
-				if (client != null)
 					client.close();
 			} catch (IOException e) {
 			}

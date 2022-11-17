@@ -73,7 +73,7 @@ public class ReadMailAPI {
 					if (id.matches("[0-9]+")) {
 						int i = Integer.parseInt(id);
 						if(i >= messages.length) {
-							System.out.println("invalid input number");
+							System.out.println("Error: Index too high.");
 						} else {
 						printMessage(messages, i);
 						}
@@ -87,7 +87,7 @@ public class ReadMailAPI {
 				} else if (cmd.equalsIgnoreCase("help")) {
 					System.out.println("Commands: LIST; RETR ALL; RETR <number>; QUIT");
 				} else if (cmd.equalsIgnoreCase("quit")) {
-					System.out.println("disconnected");
+					System.out.println("Disconnected");
 					break;
 				}
 			}
