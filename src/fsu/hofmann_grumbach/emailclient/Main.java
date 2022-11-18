@@ -46,7 +46,7 @@ public class Main {
 	 		        	break;
 	 	    		}else if(in.equals("1")) {
 	 		        	//sM = new SendMailAPI();
-	 		        	
+	 		        	//sm.start();
 	 		        	break;
 	 		        }
 	 	        
