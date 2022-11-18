@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.stream.Stream;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -41,19 +39,13 @@ public class ReadSocket {
 				System.out.println("Error: Please provide a server adress");
 				return;
 			}
-<<<<<<< Updated upstream
 
-			// initiate new client with specified adress and port
-			client = new Socket(serverAdress, serverPort);
-=======
-			
 			//initiate new client with specified adress and port
 			//client = new Socket(serverAdress, serverPort);
 			 SSLSocketFactory factory =
 		                (SSLSocketFactory)SSLSocketFactory.getDefault();
 		             client=
 		                (SSLSocket)factory.createSocket(serverAdress, serverPort);
->>>>>>> Stashed changes
 
 			// define input- and output stream for client-server connection
 			InputStream is = client.getInputStream();
