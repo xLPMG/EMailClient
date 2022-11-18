@@ -12,7 +12,7 @@ import javax.net.ssl.SSLSocketFactory;
 
 public class ReadSocket {
 
-	String serverAdress = "";
+	String serverAddress = "";
 	int serverPort;
 	SSLSocket client = null;
 
@@ -26,7 +26,7 @@ public class ReadSocket {
 			stdin = new BufferedReader(new InputStreamReader(System.in));
 
 			System.out.print("Server adress:");
-			serverAdress = stdin.readLine();
+			serverAddress = stdin.readLine();
 			System.out.print("Port:");
 			String portStr = stdin.readLine();
 			// check if port is a number and that the adress isnt empty
@@ -36,14 +36,14 @@ public class ReadSocket {
 			}
 			serverPort = Integer.parseInt(portStr);
 
-			if (serverAdress.equals("")) {
+			if (serverAddress.equals("")) {
 				System.out.println("Error: Please provide a server adress");
 				return;
 			}
 
 			// initiate new client with specified adress and port
 			SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-			client = (SSLSocket) factory.createSocket(serverAdress, serverPort);
+			client = (SSLSocket) factory.createSocket(serverAddress, serverPort);
 
 			// define input- and output stream for client-server connection
 			InputStream is = client.getInputStream();
