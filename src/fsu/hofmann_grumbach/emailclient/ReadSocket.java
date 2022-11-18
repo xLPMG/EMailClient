@@ -12,13 +12,14 @@ import javax.net.ssl.SSLSocketFactory;
 
 public class ReadSocket {
 
-	public void start() {
-		String serverAdress = "";
-		int serverPort;
+	String serverAdress = "";
+	int serverPort;
+	SSLSocket client = null;
 
-		//Socket client = null;
-		SSLSocket client= null;
+	public void start() {
+
 		System.out.println("Read mails using sockets.");
+
 		try {
 			// read user input using BufferedReader
 			BufferedReader stdin;
@@ -40,12 +41,9 @@ public class ReadSocket {
 				return;
 			}
 
-			//initiate new client with specified adress and port
-			//client = new Socket(serverAdress, serverPort);
-			 SSLSocketFactory factory =
-		                (SSLSocketFactory)SSLSocketFactory.getDefault();
-		             client=
-		                (SSLSocket)factory.createSocket(serverAdress, serverPort);
+			// initiate new client with specified adress and port
+			SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+			client = (SSLSocket) factory.createSocket(serverAdress, serverPort);
 
 			// define input- and output stream for client-server connection
 			InputStream is = client.getInputStream();
@@ -63,7 +61,7 @@ public class ReadSocket {
 				String serverOutput = sockin.readLine();
 				System.out.println("OUT:" + serverOutput);
 
-				// commands retr and list require a multi-line output	
+				// commands retr and list require a multi-line output
 				if ((userInput.toLowerCase().startsWith("retr") || userInput.equalsIgnoreCase("list"))
 						&& serverOutput.charAt(0) == '+')
 					while (true) {
@@ -84,7 +82,7 @@ public class ReadSocket {
 			System.out.println(e.toString());
 		} finally {
 			try {
-					client.close();
+				client.close();
 			} catch (IOException e) {
 			}
 		}
