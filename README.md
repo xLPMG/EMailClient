@@ -1,6 +1,6 @@
 # E-Mail Client
 <p><strong>Institution: FSU Jena, Comp Sci Year 3</strong> <br />Advanced Java programming course: E-Mail Client</p>
-<p><br /><strong>Milestone 1 (18.11.22):</strong></p>
+<p><br /><strong>Milestone 1 (18.11.22): <em>COMPLETED (100%)</em></strong></p>
 <p>Write a program (for the command prompt) with the help of which it is possible to retrieve mails via POP3. The program must at least fulfill the following requirements:<br />- Input of the POP3 server (Internet address)<br />- Input of the user name and password<br />- Display of existing messages (number, message number, etc.)<br />- Display a single message (selected by user)<br />- Terminate the connection (by user selection)</p>
 <p><strong>Milestone 2 (16.12.22):</strong></p>
 <p>Write a program (for the command prompt) with the help of which it is possible to send mails via SMTP. The program must at least meet the following requirements:<br />- Input of the SMTP server (Internet address)<br />- Input of the sender address<br />- Input of the destination address(es) (recipient, also several)<br />- Input of the subject<br />- Input of the message text (at least one line)<br />- Input whether the email should be encrypted.<br />- Send the mail<br />- Terminate the connection (by user selection)</p>
