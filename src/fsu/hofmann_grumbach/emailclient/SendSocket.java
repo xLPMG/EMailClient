@@ -78,8 +78,9 @@ public class SendSocket {
 				System.out.println("Error: Please provide a server adress");
 				return;
 			}
-
-			Socket servSocket = new Socket(serverAddress, serverPort);
+			SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+			SSLSocket servSocket = (SSLSocket) factory.createSocket(serverAddress, serverPort);
+			//Socket servSocket = new Socket(serverAddress, serverPort);
 			DataOutputStream os = new DataOutputStream(servSocket.getOutputStream());
 			DataInputStream is = new DataInputStream(servSocket.getInputStream());
 
