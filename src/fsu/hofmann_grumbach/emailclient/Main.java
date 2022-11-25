@@ -4,12 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import fsu.hofmann_grumbach.emailclient.gui.MainWindow;
+
 public class Main {
 
 	static ReadSocket rS;
 	static ReadMailAPI rM;
 	
 	public static void main(String[] args) {
+		MainWindow gui = new MainWindow();
+		gui.startx();
 		try {
 			chooseMethod();
 		} catch (IOException e) {
