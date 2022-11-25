@@ -8,6 +8,7 @@ public class Main {
 
 	static ReadSocket rS;
 	static ReadMailAPI rM;
+	static SendMailAPI sM;
 	
 	public static void main(String[] args) {
 		try {
@@ -45,8 +46,8 @@ public class Main {
 	 		        	
 	 		        	break;
 	 	    		}else if(in.equals("1")) {
-	 		        	//sM = new SendMailAPI();
-	 		        	//sm.start();
+	 		        	sM = new SendMailAPI();
+	 		        	sM.start();
 	 		        	break;
 	 		        }
 	 	        
