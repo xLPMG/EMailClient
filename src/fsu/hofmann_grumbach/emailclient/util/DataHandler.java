@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -14,29 +15,27 @@ public class DataHandler {
 	// HashMap<ProgramName, username:password>
 	String os = "win";
 
-	private HashMap<String, String> accountDataMap = new HashMap<>();
+	private ArrayList<Account> accountList = new ArrayList<>();
 	private HashMap<String, String> emailDataMap = new HashMap<>();
 	private File programFolder;
 	private File userData;
 	private File emailData;
 	private AES aes;
 	private String keycode;
-	private String generalPassword = "";
-	private String hint = "";
 
 	public DataHandler() {
 		os = System.getProperty("os.name").toLowerCase();
 		init();
-		loadData();
+		loadAccountData();
 	}
 
 	private void init() {
 		if (os.contains("win")) {
-			programFolder = new File(System.getenv("APPDATA") + "/EMC-GrumHofm");
+			programFolder = new File(System.getenv("APPDATA") + "/JEMC-GrumHofm");
 			if (!programFolder.exists()) {
 				programFolder.mkdirs();
 			}
-			userData = new File(System.getenv("APPDATA") + "/EMC-GrumHofm/userData.dat");
+			userData = new File(System.getenv("APPDATA") + "/JEMC-GrumHofm/userData.dat");
 			if (!userData.exists()) {
 				try {
 					userData.createNewFile();
@@ -45,11 +44,13 @@ public class DataHandler {
 				}
 			}
 		} else if (os.contains("mac")) {
-			programFolder = new File(System.getProperty("user.home", "."), "Library/Application Support/" + "EMC-GrumHofm");
+			programFolder = new File(System.getProperty("user.home", "."),
+					"Library/Application Support/" + "JEMC-GrumHofm");
 			if (!programFolder.exists()) {
 				programFolder.mkdirs();
 			}
-			userData = new File(System.getProperty("user.home", "."), "Library/Application Support/EMC-GrumHofm/userData.dat");
+			userData = new File(System.getProperty("user.home", "."),
+					"Library/Application Support/JEMC-GrumHofm/userData.dat");
 			if (!userData.exists()) {
 				try {
 					userData.createNewFile();
@@ -114,24 +115,19 @@ public class DataHandler {
 
 	}
 
-	private void loadData() {
+	private void loadAccountData() {
 		try {
-			accountDataMap.clear();
+			accountList.clear();
 			BufferedReader br = new BufferedReader(new FileReader(userData.getAbsolutePath()));
 			String line;
 			while ((line = br.readLine()) != null) {
 				if (!line.isEmpty()) {
 					String decodedLine = aes.decode(line, keycode);
-					//TODO
-//					if (decodedLine.startsWith("pass:")) {
-//						generalPassword = decodedLine.split(":")[1];
-//					} else if (decodedLine.startsWith("hint:")) {
-//						hint = decodedLine.split(":")[1];
-//						hint = hint.replace("x3", "");
-//					} else {
-//						String data[] = decodedLine.split("[,]");
-//						dataMap.put(data[0], data[1]);
-//					}
+					System.out.println(decodedLine);
+					String[] data = decodedLine.split("[,]");
+					String[] values = data[1].split("###");
+					addAccount(data[0], values[0], values[1], values[2], values[3], values[4],
+							Integer.parseInt(values[5]), values[6], Integer.parseInt(values[7]));
 				}
 			}
 			br.close();
@@ -140,41 +136,50 @@ public class DataHandler {
 		}
 	}
 
-	private void saveData() {
+	private void saveAccountData() {
 		try {
 			FileWriter writer = new FileWriter(userData.getAbsolutePath());
 			writer.write("");
-			for (Entry<String, String> entry : accountDataMap.entrySet()) {
-				String key = entry.getKey();
-				String value = entry.getValue();
+			for (Account acc : accountList) {
+				String key = acc.getUsername();
+				String value = acc.getData();
 				writer.write(aes.encode(key + "," + value, keycode));
 				writer.write(System.getProperty("line.separator"));
 			}
-			//TODO
-//			writer.write(aes.encode("pass:" + generalPassword, keycode));
-//			writer.write(System.getProperty("line.separator"));
-//			writer.write(aes.encode("hint:" + hint + "x3", keycode));
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		loadData();
 	}
 
-	public HashMap<String, String> getAccountData() {
-		return accountDataMap;
+	public ArrayList<Account> getAccountData() {
+		return accountList;
 	}
 
-	public void setAccountData(HashMap<String, String> dataMap) {
-		this.accountDataMap = dataMap;
-		saveData();
+	public void addAccount(String username, String email, String password, String name, String surname, String serverIN,
+			int portIN, String serverOUT, int portOUT) {
+		for (Account acc : accountList) {
+			if (acc.getUsername().equals(username)) {
+				return;
+			}
+		}
+		accountList.add(new Account(username, email, password, name, surname, serverIN, portIN, serverOUT, portOUT));
+		saveAccountData();
 	}
-	
-	public void addAccount() {}
-	public void removeAccount() {}
-	
-	public void addEMail() {}
-	public void removeEMail() {}
-	
+
+	public void removeAccount(String username) {
+		for (Account acc : accountList) {
+			if (acc.getUsername().equals(username)) {
+				accountList.remove(acc);
+			}
+		}
+		saveAccountData();
+	}
+
+	public void addEMail() {
+	}
+
+	public void removeEMail() {
+	}
 
 }
