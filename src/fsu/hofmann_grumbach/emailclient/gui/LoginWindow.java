@@ -47,7 +47,7 @@ public class LoginWindow extends JFrame {
 		this.dH = dH;
 
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, width, height);
 		// center window on screen
 		setLocationRelativeTo(null);
@@ -118,7 +118,7 @@ public class LoginWindow extends JFrame {
 		accList.setBackground(c_transparent);
 		accList.setSelectionBackground(c_transparent);
 		accList.setOpaque(false);
-		accList.setFont(new Font("Arial", Font.PLAIN, 16));
+		accList.setFont(new Font(fontName, Font.PLAIN, 16));
 		listPanel.add(accList);
 		accList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
@@ -128,7 +128,6 @@ public class LoginWindow extends JFrame {
 					String selectedUsername = (String) accListModel.getElementAt(index);
 					for (Account acc : dH.getAccountData()) {
 						if (acc.getUsername().equals(selectedUsername)) {
-							System.out.println("new window");
 							MainWindow mW = new MainWindow(dH, acc);
 						}
 					}

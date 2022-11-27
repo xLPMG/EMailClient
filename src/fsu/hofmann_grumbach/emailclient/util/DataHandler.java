@@ -2,31 +2,41 @@ package fsu.hofmann_grumbach.emailclient.util;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
+
+import fsu.hofmann_grumbach.emailclient.mail.MailReceiver;
 
 public class DataHandler {
 
-	// HashMap<ProgramName, username:password>
 	String os = "win";
 
 	private ArrayList<Account> accountList = new ArrayList<>();
-	private HashMap<String, String> emailDataMap = new HashMap<>();
+	private ArrayList<Message> emailList = new ArrayList<>();
 	private File programFolder;
 	private File userData;
-	private File emailData;
+	private File emailFolder;
 	private AES aes;
 	private String keycode;
-
+	
 	public DataHandler() {
 		os = System.getProperty("os.name").toLowerCase();
 		init();
 		loadAccountData();
+		loadMails();
 	}
 
 	private void init() {
@@ -43,6 +53,11 @@ public class DataHandler {
 					e.printStackTrace();
 				}
 			}
+			
+			emailFolder = new File(System.getenv("APPDATA") + "/JEMC-GrumHofm/emails");
+			if (!emailFolder.exists()) {
+				emailFolder.mkdirs();
+			}
 		} else if (os.contains("mac")) {
 			programFolder = new File(System.getProperty("user.home", "."),
 					"Library/Application Support/" + "JEMC-GrumHofm");
@@ -57,6 +72,11 @@ public class DataHandler {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
+			emailFolder = new File(System.getProperty("user.home", "."),
+					"Library/Application Support/JEMC-GrumHofm/emails");
+			if (!emailFolder.exists()) {
+				emailFolder.mkdirs();
 			}
 		}
 
@@ -175,10 +195,49 @@ public class DataHandler {
 		saveAccountData();
 	}
 
-	public void addEMail() {
+	public void saveMail(Message message) {
+		try {
+			String fileNameRaw = message.getSentDate()+"-"+message.getFrom()[0]+".eml";
+			String fileName = fileNameRaw.replace(" ", "_").replace("/", "|");
+			File mailFile = new File(emailFolder.getAbsolutePath()+"/"+fileName);
+			if(!mailFile.exists()) {
+				message.writeTo(new FileOutputStream(mailFile));
+			}
+		} catch (IOException | MessagingException e) {
+			e.printStackTrace();
+		}
+		loadMails();
+	}
+	
+	public void loadMails() {
+		emailList.clear();
+		for (File mailFile : emailFolder.listFiles()) {
+	        if (!mailFile.isDirectory()) {
+	        	Properties properties = new Properties();
+				properties.put("mail.pop3.host", "");
+				properties.put("mail.pop3.port", "");
+				
+				Session emailSession = Session.getDefaultInstance(properties);
+	        	
+	            try {
+	            	InputStream source = new FileInputStream(mailFile);
+					MimeMessage message = new MimeMessage(emailSession, source);
+					emailList.add(message);
+				} catch (MessagingException | FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }
+	    }
 	}
 
-	public void removeEMail() {
+	public ArrayList<Message> getEmailList() {
+		return emailList;
 	}
+
+	public void setEmailList(ArrayList<Message> emailList) {
+		this.emailList = emailList;
+	}
+	
 
 }
