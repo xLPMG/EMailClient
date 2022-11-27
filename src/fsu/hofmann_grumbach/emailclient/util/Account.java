@@ -6,22 +6,22 @@ public class Account {
 	private String email;
 	private String name;
 	private String surname;
-	private String serverPOP3;
-	private int serverPOP3Port;
-	private String serverSMTP;
-	private int serverSMTPPort;
+	private String inbox;
+	private int inboxPort;
+	private String outbox;
+	private int outboxPort;
 
-	public Account(String username, String password, String email, String name, String surname, String serverPOP3,
-			int serverPOP3Port, String serverSMTP, int serverSMTPPort) {
+	public Account(String username, String password, String email, String name, String surname, String inbox,
+			int inboxPort, String outbox, int ouboxPort) {
 		this.username=username;
 		this.password=password;
 		this.email=email;
 		this.name=name;
 		this.surname=surname;
-		this.serverPOP3=serverPOP3;
-		this.serverPOP3Port=serverPOP3Port;
-		this.serverSMTP=serverSMTP;
-		this.serverSMTPPort=serverSMTPPort;
+		this.inbox=inbox;
+		this.inboxPort=inboxPort;
+		this.outbox=outbox;
+		this.outboxPort=ouboxPort;
 	}
 
 	public String getUsername() {
@@ -60,39 +60,39 @@ public class Account {
 		this.surname = surname;
 	}
 
-	public String getServerPOP3() {
-		return serverPOP3;
+	public String getInbox() {
+		return inbox;
 	}
 
-	public void setServerPOP3(String serverPOP3) {
-		this.serverPOP3 = serverPOP3;
+	public void setInbox(String inbox) {
+		this.inbox = inbox;
 	}
 
-	public int getServerPOP3Port() {
-		return serverPOP3Port;
+	public int getInboxPort() {
+		return inboxPort;
 	}
 
-	public void setServerPOP3Port(int serverPOP3Port) {
-		this.serverPOP3Port = serverPOP3Port;
+	public void setInboxPort(int inboxPort) {
+		this.inboxPort = inboxPort;
 	}
 
-	public String getServerSMTP() {
-		return serverSMTP;
+	public String getOutbox() {
+		return outbox;
 	}
 
-	public void setServerSMTP(String serverSMTP) {
-		this.serverSMTP = serverSMTP;
+	public void setOutbox(String outbox) {
+		this.outbox = outbox;
 	}
 
-	public int getServerSMTPPort() {
-		return serverSMTPPort;
+	public int getOutboxPort() {
+		return outboxPort;
 	}
 
-	public void setServerSMTPPort(int serverSMTPPort) {
-		this.serverSMTPPort = serverSMTPPort;
+	public void setOutboxPort(int outboxPort) {
+		this.outboxPort = outboxPort;
 	}
 	
 	public String getData() {
-	return password+"###"+email+"###"+name+"###"+surname+"###"+serverPOP3+"###"+serverPOP3Port+"###"+serverSMTP+"###"+serverSMTPPort;
+	return password+"###"+email+"###"+name+"###"+surname+"###"+inbox+"###"+inboxPort+"###"+outbox+"###"+outboxPort;
 	}
 }

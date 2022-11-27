@@ -123,7 +123,6 @@ public class DataHandler {
 			while ((line = br.readLine()) != null) {
 				if (!line.isEmpty()) {
 					String decodedLine = aes.decode(line, keycode);
-					System.out.println(decodedLine);
 					String[] data = decodedLine.split("[,]");
 					String[] values = data[1].split("###");
 					addAccount(data[0], values[0], values[1], values[2], values[3], values[4],

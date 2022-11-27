@@ -5,14 +5,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import fsu.hofmann_grumbach.emailclient.gui.MainWindow;
+import fsu.hofmann_grumbach.emailclient.gui.LoginWindow;
 import fsu.hofmann_grumbach.emailclient.util.DataHandler;
 
 public class Manager {
 
 	public void init() {
 		DataHandler dH = new DataHandler();
-		dH.addAccount("lpmg", "lpmg@web.de", "pass", "luca", "phil", "pop3", 0, "smtp", 0);
 		startx(dH);
 		
 		try {
@@ -44,7 +43,7 @@ public class Manager {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainWindow frame = new MainWindow(dH);
+					LoginWindow frame = new LoginWindow(dH);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
