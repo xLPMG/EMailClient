@@ -1,5 +1,6 @@
 package fsu.hofmann_grumbach.emailclient;
 
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 //import java.net.Authenticator;
@@ -36,18 +37,22 @@ public class SendMailAPI {
 			//char[] password=pass.toCharArray();
 			
 			Properties properties = System.getProperties();
-			properties.put("mail.smtp.host", serverAdress);
-	        properties.put("mail.smtp.port", serverPort);
-	        properties.put("mail.smtp.ssl.enable", "true");
+			properties.put("mail.smtp.host", "mail.gmx.net");
+	        properties.put("mail.smtp.port", 587);
+	        //properties.put("mail.smtp.ssl.enable", "true");
+	        properties.put("mail.smtp.starttls.enable", "true");
 	        properties.put("mail.smtp.auth", "true");
-	        properties.put("mail.smtp.ssl.trust", user);
+	        properties.put("mail.smtp.user", "richard_hofmann@gmx.de");
+	        properties.put("mail.smtp.password", "dessau_05");
+	        
+	        properties.put("mail.smtp.ssl.trust", "richard_hofmann@gmx.de");
 	        
 	        
 	        
 	        Session session = Session.getInstance(properties, 
 	        	new Authenticator() {
 	            	protected PasswordAuthentication getPasswordAuthentication() {
-	            		return new PasswordAuthentication(user, pass);
+	            		return new PasswordAuthentication("richard_hofmann@gmx.de", "dessau_05");
 	            }
 	        });
 	        
@@ -62,9 +67,9 @@ public class SendMailAPI {
 			String msg = userInput.readLine();
 			
 	        MimeMessage message = new MimeMessage(session);
-	        message.setFrom(new InternetAddress(fromMail));
+	        message.setFrom(new InternetAddress("richard_hofmann@gmx.de"));
 	        message.setRecipients(
-	          Message.RecipientType.TO, InternetAddress.parse(toMail));
+	          Message.RecipientType.TO, InternetAddress.parse("richard_hofmann@gmx.de"));
 	        message.setSubject(subject);
 	        
 	        MimeBodyPart mimeBodyPart = new MimeBodyPart();
@@ -75,7 +80,9 @@ public class SendMailAPI {
 			
 			message.setContent(multipart);
 
-			Transport.send(message);
+			//Transport.send(message);
+			Transport transport = session.getTransport("smtp");
+		     transport.connect(null, "richard_hofmann@gmx.de", "dessau_05");
 			
 			
 			System.out.println("message sent successfully");  
@@ -85,3 +92,54 @@ public class SendMailAPI {
 		}
 	}
 }
+/*
+import java.util.Properties;  
+import javax.mail.*;  
+import javax.mail.internet.*;  
+  
+public class SendMailAPI {  
+	public void start() {  
+  
+  String host="mail.gmx.net";  
+  final String user="richard_hofmann@gmx.de";//change accordingly  
+  final String password="dessau_05";//change accordingly  
+    
+  String to="richard_hofmann@gmx.de";//change accordingly  
+  
+   //Get the session object  
+   Properties props = new Properties();  
+   props.put("mail.smtp.host",host);  
+   props.put("mail.smtp.auth", "true"); 
+   props.put("mail.smtp.port", 587);
+   props.put("mail.smtp.starttls.enable", "true");
+   props.setProperty("mail.smtp.user",user);
+   props.setProperty("mail.smtp.password", password);
+   props.setProperty("mail.smtp.auth", "true"); 
+     
+   Session session = Session.getInstance(props,  
+    new javax.mail.Authenticator() {  
+      protected PasswordAuthentication getPasswordAuthentication() {  
+    return new PasswordAuthentication(user,password);  
+      }  
+    });  
+  
+   //Compose the message  
+    try {  
+     MimeMessage message = new MimeMessage(session);  
+     message.setFrom(new InternetAddress(user));  
+     message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));  
+     message.setSubject("javatpoint");  
+     message.setText("This is simple program of sending email using JavaMail API");  
+       
+    //send the message  
+     
+     Transport transport = session.getTransport("smtp");
+     transport.connect(null, user, password);
+     Transport.send(message);  
+     System.out.println("mail snet");
+     System.out.println("message sent successfully...");  
+   
+     } catch (MessagingException e) {e.printStackTrace();}  
+ }  
+}  */
+
