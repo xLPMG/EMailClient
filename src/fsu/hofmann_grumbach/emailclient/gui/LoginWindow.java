@@ -1,6 +1,5 @@
 package fsu.hofmann_grumbach.emailclient.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -53,7 +52,7 @@ public class LoginWindow extends JFrame {
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		setTitle("Java E-Mail Client");
-		
+
 		JPanel loginPanel = new JPanel();
 		loginPanel.setSize(width, height);
 		loginPanel.setLayout(null);
@@ -120,6 +119,7 @@ public class LoginWindow extends JFrame {
 		accList.setOpaque(false);
 		accList.setFont(new Font(fontName, Font.PLAIN, 16));
 		listPanel.add(accList);
+
 		accList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				JList list = (JList) evt.getSource();
@@ -174,5 +174,4 @@ public class LoginWindow extends JFrame {
 			accListModel.addElement(acc.getUsername());
 		}
 	}
-
 }
