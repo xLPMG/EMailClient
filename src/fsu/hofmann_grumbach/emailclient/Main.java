@@ -8,6 +8,7 @@ public class Main {
 
 	static ReadSocket rS;
 	static ReadMailAPI rM;
+	static SendSocket sS;
 	static SendMailAPI sM;
 	
 	public static void main(String[] args) {
@@ -43,7 +44,8 @@ public class Main {
 	    		System.out.println("Send mails using sockets(0) or using Java Mail API(1)");
 	    		in = reader.readLine();
 	 	    		if(in.equals("0")){
-	 		        	
+	 	    			sS = new SendSocket();
+	 		        	sS.start();
 	 		        	break;
 	 	    		}else if(in.equals("1")) {
 	 		        	sM = new SendMailAPI();
