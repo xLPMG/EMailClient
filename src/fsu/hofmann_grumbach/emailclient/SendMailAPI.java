@@ -42,17 +42,17 @@ public class SendMailAPI {
 	        //properties.put("mail.smtp.ssl.enable", "true");
 	        properties.put("mail.smtp.starttls.enable", "true");
 	        properties.put("mail.smtp.auth", "true");
-	        properties.put("mail.smtp.user", "richard_hofmann@gmx.de");
-	        properties.put("mail.smtp.password", "dessau_05");
+	        properties.put("mail.smtp.user", "");
+	        properties.put("mail.smtp.password", "");
 	        
-	        properties.put("mail.smtp.ssl.trust", "richard_hofmann@gmx.de");
+	        properties.put("mail.smtp.ssl.trust", "r");
 	        
 	        
 	        
 	        Session session = Session.getInstance(properties, 
 	        	new Authenticator() {
 	            	protected PasswordAuthentication getPasswordAuthentication() {
-	            		return new PasswordAuthentication("richard_hofmann@gmx.de", "dessau_05");
+	            		return new PasswordAuthentication("", "");
 	            }
 	        });
 	        
@@ -82,7 +82,7 @@ public class SendMailAPI {
 
 			//Transport.send(message);
 			Transport transport = session.getTransport("smtp");
-		     transport.connect(null, "richard_hofmann@gmx.de", "dessau_05");
+		     transport.connect(null, "", "");
 			
 			
 			System.out.println("message sent successfully");  
