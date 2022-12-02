@@ -47,12 +47,12 @@ public class SendSocket {
 			System.out.print("What is the subject of your message? ");
 			String subject = stdin.readLine();
 			
-			System.out.print("You can now type in your message: (Type END in a new line at the end of our message)\n");
+			System.out.print("You can now type in your message: (Type a single . in a new line at the end of your message)\n");
 
 			List<String> message = new ArrayList<>();
 			while(true) {
 				String line = stdin.readLine();
-				if(line.equals("END")) {
+				if(line.equals(".")) {
 					break;
 				}else {
 					message.add(line);
@@ -72,7 +72,7 @@ public class SendSocket {
 			}
 			SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 			SSLSocket servSocket = (SSLSocket) factory.createSocket(serverAddress, serverPort);
-			//Socket servSocket = new Socket(serverAddress, serverPort);
+			
 			DataOutputStream os = new DataOutputStream(servSocket.getOutputStream());
 			DataInputStream is = new DataInputStream(servSocket.getInputStream());
 
