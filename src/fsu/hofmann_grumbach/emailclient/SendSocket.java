@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -70,8 +71,7 @@ public class SendSocket {
 				System.out.println("Error: Please provide a server adress");
 				return;
 			}
-			SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-			SSLSocket servSocket = (SSLSocket) factory.createSocket(serverAddress, serverPort);
+			Socket servSocket = new Socket(serverAddress,serverPort);
 			
 			DataOutputStream os = new DataOutputStream(servSocket.getOutputStream());
 			DataInputStream is = new DataInputStream(servSocket.getInputStream());
@@ -80,8 +80,8 @@ public class SendSocket {
 			BufferedReader sockin = new BufferedReader(new InputStreamReader(is));
 
 			if (servSocket != null && os != null && is != null) {
-				sockout.println("HELO " + localhost);
-				handleOutput(sockin.readLine(), "HELO");
+				sockout.println("EHLO " + sender);
+				handleOutput(sockin.readLine(), "EHLO");
 				sockout.println("AUTH LOGIN");
 				handleOutput(sockin.readLine(), "AUTH LOGIN");
 				sockout.println(Base64.getEncoder().encodeToString(sender.getBytes()));
@@ -113,6 +113,6 @@ public class SendSocket {
 	}
 
 	private void handleOutput(String serverResponse, String operation) {
-		System.out.println(operation + ": " + serverResponse);
+		System.out.println("DEBUG: "+operation + ": " + serverResponse);
 	}
 }
