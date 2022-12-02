@@ -101,10 +101,10 @@ public class SendMailAPI {
 	public void start() {  
   
   String host="mail.gmx.net";  
-  final String user="richard_hofmann@gmx.de";//change accordingly  
-  final String password="dessau_05";//change accordingly  
+  final String user="";//change accordingly  
+  final String password="";//change accordingly  
     
-  String to="richard_hofmann@gmx.de";//change accordingly  
+  String to="";//change accordingly  
   
    //Get the session object  
    Properties props = new Properties();  
