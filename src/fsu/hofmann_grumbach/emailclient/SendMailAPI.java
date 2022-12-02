@@ -34,16 +34,12 @@ public class SendMailAPI {
 			System.out.print("PASS:");
 			pass = userInput.readLine();
 			
-			//char[] password=pass.toCharArray();
 			
 			Properties properties = System.getProperties();
 			properties.put("mail.smtp.host", serverAdress);
 	        properties.put("mail.smtp.port", serverPort);
-	        //properties.put("mail.smtp.ssl.enable", "true");
 	        properties.put("mail.smtp.starttls.enable", "true");
 	        properties.put("mail.smtp.auth", "true");
-	        //properties.put("mail.smtp.user", "");
-	        //properties.put("mail.smtp.password", "");
 	        
 	        properties.put("mail.smtp.ssl.trust", serverAdress);
 	        
@@ -72,14 +68,17 @@ public class SendMailAPI {
 	          Message.RecipientType.TO, new InternetAddress(toMail));
 	        message.setSubject(subject);
 	        
-	        MimeBodyPart mimeBodyPart = new MimeBodyPart();
-			mimeBodyPart.setContent(msg, "text/html; charset=utf-8");
-	        
-			Multipart multipart = new MimeMultipart();
-			multipart.addBodyPart(mimeBodyPart);
+	        String text="";
+			while(true) {
+				String line = userInput.readLine();
+				if(line.equals(".")) {
+					break;
+				}else {
+					text+=line+"\n";
+				}
+			}
+			message.setText(text);
 			
-			message.setContent(multipart);
-
 			//Transport.send(message);
 			Transport.send(message);
 			System.out.println("message sent successfully");  
@@ -89,54 +88,4 @@ public class SendMailAPI {
 		}
 	}
 }
-/*
-import java.util.Properties;  
-import javax.mail.*;  
-import javax.mail.internet.*;  
-  
-public class SendMailAPI {  
-	public void start() {  
-  
-  String host="mail.gmx.net";  
-  final String user="";//change accordingly  
-  final String password="";//change accordingly  
-    
-  String to="";//change accordingly  
-  
-   //Get the session object  
-   Properties props = new Properties();  
-   props.put("mail.smtp.host",host);  
-   props.put("mail.smtp.auth", "true"); 
-   props.put("mail.smtp.port", 587);
-   props.put("mail.smtp.starttls.enable", "true");
-   props.setProperty("mail.smtp.user",user);
-   props.setProperty("mail.smtp.password", password);
-   props.setProperty("mail.smtp.auth", "true"); 
-     
-   Session session = Session.getInstance(props,  
-    new javax.mail.Authenticator() {  
-      protected PasswordAuthentication getPasswordAuthentication() {  
-    return new PasswordAuthentication(user,password);  
-      }  
-    });  
-  
-   //Compose the message  
-    try {  
-     MimeMessage message = new MimeMessage(session);  
-     message.setFrom(new InternetAddress(user));  
-     message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));  
-     message.setSubject("javatpoint");  
-     message.setText("This is simple program of sending email using JavaMail API");  
-       
-    //send the message  
-     
-     Transport transport = session.getTransport("smtp");
-     transport.connect(null, user, password);
-     Transport.send(message);  
-     System.out.println("mail snet");
-     System.out.println("message sent successfully...");  
-   
-     } catch (MessagingException e) {e.printStackTrace();}  
- }  
-}  */
 
