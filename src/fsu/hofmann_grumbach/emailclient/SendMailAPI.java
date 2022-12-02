@@ -59,8 +59,7 @@ public class SendMailAPI {
 			System.out.print("Subject:");
 			String subject = userInput.readLine();
 			
-			System.out.print("Write your message:");
-			String msg = userInput.readLine();
+			
 			
 	        MimeMessage message = new MimeMessage(session);
 	        message.setFrom(new InternetAddress(fromMail));
@@ -68,6 +67,7 @@ public class SendMailAPI {
 	          Message.RecipientType.TO, new InternetAddress(toMail));
 	        message.setSubject(subject);
 	        
+	        System.out.print("Write your message:");
 	        String text="";
 			while(true) {
 				String line = userInput.readLine();
@@ -79,6 +79,7 @@ public class SendMailAPI {
 			}
 			message.setText(text);
 			
+
 			//Transport.send(message);
 			Transport.send(message);
 			System.out.println("message sent successfully");  
