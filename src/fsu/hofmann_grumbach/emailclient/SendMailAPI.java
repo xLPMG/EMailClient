@@ -37,22 +37,22 @@ public class SendMailAPI {
 			//char[] password=pass.toCharArray();
 			
 			Properties properties = System.getProperties();
-			properties.put("mail.smtp.host", "mail.gmx.net");
-	        properties.put("mail.smtp.port", 587);
+			properties.put("mail.smtp.host", serverAdress);
+	        properties.put("mail.smtp.port", serverPort);
 	        //properties.put("mail.smtp.ssl.enable", "true");
 	        properties.put("mail.smtp.starttls.enable", "true");
 	        properties.put("mail.smtp.auth", "true");
-	        properties.put("mail.smtp.user", "");
-	        properties.put("mail.smtp.password", "");
+	        //properties.put("mail.smtp.user", "");
+	        //properties.put("mail.smtp.password", "");
 	        
-	        properties.put("mail.smtp.ssl.trust", "r");
+	        properties.put("mail.smtp.ssl.trust", serverAdress);
 	        
 	        
 	        
 	        Session session = Session.getInstance(properties, 
 	        	new Authenticator() {
 	            	protected PasswordAuthentication getPasswordAuthentication() {
-	            		return new PasswordAuthentication("", "");
+	            		return new PasswordAuthentication(user , pass);
 	            }
 	        });
 	        
@@ -67,9 +67,9 @@ public class SendMailAPI {
 			String msg = userInput.readLine();
 			
 	        MimeMessage message = new MimeMessage(session);
-	        message.setFrom(new InternetAddress("richard_hofmann@gmx.de"));
-	        message.setRecipients(
-	          Message.RecipientType.TO, InternetAddress.parse("richard_hofmann@gmx.de"));
+	        message.setFrom(new InternetAddress(fromMail));
+	        message.addRecipient(
+	          Message.RecipientType.TO, new InternetAddress(toMail));
 	        message.setSubject(subject);
 	        
 	        MimeBodyPart mimeBodyPart = new MimeBodyPart();
@@ -81,10 +81,7 @@ public class SendMailAPI {
 			message.setContent(multipart);
 
 			//Transport.send(message);
-			Transport transport = session.getTransport("smtp");
-		     transport.connect(null, "", "");
-			
-			
+			Transport.send(message);
 			System.out.println("message sent successfully");  
 	        
 		} catch(Exception e){
