@@ -80,8 +80,10 @@ public class SendSocket {
 			BufferedReader sockin = new BufferedReader(new InputStreamReader(is));
 
 			if (servSocket != null && os != null && is != null) {
+				handleOutput(sockin.readLine(), "create socket");
 				sockout.println("EHLO " + sender);
 				handleOutput(sockin.readLine(), "EHLO");
+				
 				sockout.println("AUTH LOGIN");
 				handleOutput(sockin.readLine(), "AUTH LOGIN");
 				sockout.println(Base64.getEncoder().encodeToString(sender.getBytes()));
@@ -101,8 +103,8 @@ public class SendSocket {
 				sockout.println(".");
 				handleOutput(sockin.readLine(), "END OF DATA");
 				if(encrypt) {
-				sockout.println("STARTTLS");
-				handleOutput(sockin.readLine(), "STARTTLS");
+					sockout.println("STARTTLS");
+					handleOutput(sockin.readLine(), "STARTTLS");
 				}
 				sockout.println("QUIT");
 				handleOutput(sockin.readLine(), "QUIT");
