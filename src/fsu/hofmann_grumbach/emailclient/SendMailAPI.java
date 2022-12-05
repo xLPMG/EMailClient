@@ -20,6 +20,8 @@ public class SendMailAPI {
 		String serverPort;
 		String user;
 		String pass;
+		Session session;
+		
 		
 		try {
 			BufferedReader userInput;
@@ -45,29 +47,43 @@ public class SendMailAPI {
 	        
 	        
 	        
-	        Session session = Session.getInstance(properties, 
+	        session = Session.getInstance(properties, 
 	        	new Authenticator() {
 	            	protected PasswordAuthentication getPasswordAuthentication() {
 	            		return new PasswordAuthentication(user , pass);
 	            }
 	        });
 	        
+	        MimeMessage message = new MimeMessage(session);
+	        
 	        System.out.print("From:");
 			String fromMail = userInput.readLine();
-			System.out.print("To:");
-			String toMail = userInput.readLine();
+			System.out.print("To (multiple recipients possible, end with sinle .)");
+			
+			
+			while(true) {
+				String toMail = userInput.readLine();
+				if(toMail.equals(".")) {
+					break;
+				}else {
+					message.addRecipient(
+					Message.RecipientType.TO, new InternetAddress(toMail));
+				}
+				
+			}
+			
 			System.out.print("Subject:");
 			String subject = userInput.readLine();
 			
 			
 			
-	        MimeMessage message = new MimeMessage(session);
+	        
 	        message.setFrom(new InternetAddress(fromMail));
-	        message.addRecipient(
-	          Message.RecipientType.TO, new InternetAddress(toMail));
+	        /*message.addRecipient(
+	          Message.RecipientType.TO, new InternetAddress(toMail));*/
 	        message.setSubject(subject);
 	        
-	        System.out.print("Write your message:");
+	        System.out.print("Write your message (multiple lines possible, end with single . :");
 	        String text="";
 			while(true) {
 				String line = userInput.readLine();
