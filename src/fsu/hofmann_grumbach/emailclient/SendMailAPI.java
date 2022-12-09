@@ -13,18 +13,18 @@ import java.util.Properties;
 
 public class SendMailAPI {
 	
+	private String serverAdress;
+	private String serverPort;
+	private String user;
+	private String pass;
+	private Session session;
+	private BufferedReader userInput;
+	
 	public void start() {
 
 		System.out.println("Sending mails using java mail API");
-		String serverAdress;
-		String serverPort;
-		String user;
-		String pass;
-		Session session;
-		
-		
+	
 		try {
-			BufferedReader userInput;
 			userInput = new BufferedReader(new InputStreamReader(System.in));
 			
 			System.out.print("Server adress:");
