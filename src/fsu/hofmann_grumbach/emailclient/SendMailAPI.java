@@ -36,16 +36,12 @@ public class SendMailAPI {
 			System.out.print("PASS:");
 			pass = userInput.readLine();
 			
-			
 			Properties properties = System.getProperties();
 			properties.put("mail.smtp.host", serverAdress);
 	        properties.put("mail.smtp.port", serverPort);
 	        properties.put("mail.smtp.starttls.enable", "true");
 	        properties.put("mail.smtp.auth", "true");
-	        
 	        properties.put("mail.smtp.ssl.trust", serverAdress);
-	        
-	        
 	        
 	        session = Session.getInstance(properties, 
 	        	new Authenticator() {
@@ -60,7 +56,6 @@ public class SendMailAPI {
 			String fromMail = userInput.readLine();
 			System.out.print("To (multiple recipients possible, end with sinle .)");
 			
-			
 			while(true) {
 				String toMail = userInput.readLine();
 				if(toMail.equals(".")) {
@@ -74,13 +69,8 @@ public class SendMailAPI {
 			
 			System.out.print("Subject:");
 			String subject = userInput.readLine();
-			
-			
-			
-	        
+        
 	        message.setFrom(new InternetAddress(fromMail));
-	        /*message.addRecipient(
-	          Message.RecipientType.TO, new InternetAddress(toMail));*/
 	        message.setSubject(subject);
 	        
 	        System.out.print("Write your message (multiple lines possible, end with single . :");
@@ -94,9 +84,7 @@ public class SendMailAPI {
 				}
 			}
 			message.setText(text);
-			
 
-			//Transport.send(message);
 			Transport.send(message);
 			System.out.println("message sent successfully");  
 	        
