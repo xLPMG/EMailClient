@@ -31,7 +31,7 @@ public class DataHandler {
 	private File emailFolder;
 	private AES aes;
 	private String keycode;
-	
+
 	public DataHandler() {
 		os = System.getProperty("os.name").toLowerCase();
 		init();
@@ -53,7 +53,7 @@ public class DataHandler {
 					e.printStackTrace();
 				}
 			}
-			
+
 			emailFolder = new File(System.getenv("APPDATA") + "/JEMC-GrumHofm/emails");
 			if (!emailFolder.exists()) {
 				emailFolder.mkdirs();
@@ -197,10 +197,10 @@ public class DataHandler {
 
 	public void saveMail(Message message) {
 		try {
-			String fileNameRaw = message.getSentDate()+"-"+message.getFrom()[0]+".eml";
+			String fileNameRaw = message.getSentDate() + "-" + message.getFrom()[0] + ".eml";
 			String fileName = fileNameRaw.replace(" ", "_").replace("/", "|");
-			File mailFile = new File(emailFolder.getAbsolutePath()+"/"+fileName);
-			if(!mailFile.exists()) {
+			File mailFile = new File(emailFolder.getAbsolutePath() + "/" + fileName);
+			if (!mailFile.exists()) {
 				message.writeTo(new FileOutputStream(mailFile));
 			}
 		} catch (IOException | MessagingException e) {
@@ -208,27 +208,27 @@ public class DataHandler {
 		}
 		loadMails();
 	}
-	
+
 	public void loadMails() {
 		emailList.clear();
 		for (File mailFile : emailFolder.listFiles()) {
-	        if (!mailFile.isDirectory()) {
-	        	Properties properties = new Properties();
+			if (!mailFile.isDirectory()) {
+				Properties properties = new Properties();
 				properties.put("mail.pop3.host", "");
 				properties.put("mail.pop3.port", "");
-				
+
 				Session emailSession = Session.getDefaultInstance(properties);
-	        	
-	            try {
-	            	InputStream source = new FileInputStream(mailFile);
+
+				try {
+					InputStream source = new FileInputStream(mailFile);
 					MimeMessage message = new MimeMessage(emailSession, source);
 					emailList.add(message);
 				} catch (MessagingException | FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-	        }
-	    }
+			}
+		}
 	}
 
 	public ArrayList<Message> getEmailList() {
@@ -238,6 +238,5 @@ public class DataHandler {
 	public void setEmailList(ArrayList<Message> emailList) {
 		this.emailList = emailList;
 	}
-	
 
 }

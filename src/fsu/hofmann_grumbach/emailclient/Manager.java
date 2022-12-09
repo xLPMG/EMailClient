@@ -21,7 +21,7 @@ public class Manager {
 		}
 	}
 
-	private static void chooseMethod() throws IOException {
+	private void chooseMethod() throws IOException {
 		System.out.println("Read mails using sockets(0) or using Java Mail API(1)?");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		while (true) {
@@ -39,7 +39,7 @@ public class Manager {
 		}
 	}
 	
-	public void startx(DataHandler dH) {
+	private void startx(DataHandler dH) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

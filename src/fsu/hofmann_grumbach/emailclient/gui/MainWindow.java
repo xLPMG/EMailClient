@@ -14,6 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import fsu.hofmann_grumbach.emailclient.mail.MailReceiver;
@@ -95,9 +98,15 @@ public class MainWindow extends JFrame {
 		JScrollPane inboxScrollPane = new JScrollPane();
 		inboxScrollPane.setLocation(20, 0);
 		inboxScrollPane.setSize(760, 400);
-		mailTableModel = new DefaultTableModel();
+		mailTableModel = new DefaultTableModel() {
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		};
 		mailTable = new JTable(mailTableModel);
 		mailTable.setBounds(20, 35, 760, 400);
+		
 		try {
 			updateTable(mailTableModel);
 		} catch (MessagingException e1) {
@@ -105,7 +114,19 @@ public class MainWindow extends JFrame {
 		}
 		inboxScrollPane.setViewportView(mailTable);
 		inboxPanel.add(inboxScrollPane);
+		
+		ListSelectionModel cellSelectionModel = mailTable.getSelectionModel();
+	    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+	    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+		    @Override
+		    public void valueChanged(ListSelectionEvent event) {
+		        if (mailTable.getSelectedRow() > -1) {
+		            System.out.println(mailTable.getValueAt(mailTable.getSelectedRow(), 0).toString());
+		        }
+		    }
+		});
+		
 	}
 
 	private void updateTable(DefaultTableModel mailTableModel) throws MessagingException {

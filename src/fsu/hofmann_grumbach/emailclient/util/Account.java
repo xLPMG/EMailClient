@@ -11,7 +11,7 @@ public class Account {
 	private String outbox;
 	private int outboxPort;
 
-	public Account(String username, String password, String email, String name, String surname, String inbox,
+	public Account(String username, String email, String password, String name, String surname, String inbox,
 			int inboxPort, String outbox, int ouboxPort) {
 		this.username=username;
 		this.password=password;
