@@ -14,11 +14,11 @@ public class Manager {
 		DataHandler dH = new DataHandler();
 		startx(dH);
 		
-		try {
-			chooseMethod();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			chooseMethod();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	private void chooseMethod() throws IOException {

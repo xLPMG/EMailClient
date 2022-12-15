@@ -22,7 +22,6 @@ public class MailReceiver {
 		this.dH=dH;
 	}
 	
-	
 	public void receiveMails(String serverAddress, String serverPort, String username, String password) {
 		try {
 
@@ -42,8 +41,19 @@ public class MailReceiver {
 			inboxFolder.open(Folder.READ_ONLY);
 
 			Message[] messages = inboxFolder.getMessages();
+			int i=1;
+			float total = messages.length;
+			int oldPerc=-1;
+			int currentPerc;
+			System.out.println("DEBUG: Loading messages");
 			for(Message m : messages) {
 				dH.saveMail(m);
+				currentPerc=(int)((i/total)*100);
+				if(currentPerc>oldPerc) {
+					System.out.println(currentPerc+"%");
+					oldPerc=currentPerc;
+				}		
+				i++;
 			}
 			inboxFolder.close(false);
 			store.close();

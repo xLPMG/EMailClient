@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.mail.Address;
 import javax.mail.Message;
@@ -15,9 +19,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import fsu.hofmann_grumbach.emailclient.mail.MailReceiver;
 import fsu.hofmann_grumbach.emailclient.util.Account;
@@ -100,36 +108,49 @@ public class MainWindow extends JFrame {
 		inboxScrollPane.setSize(760, 400);
 		mailTableModel = new DefaultTableModel() {
 			@Override
-		    public boolean isCellEditable(int row, int column) {
-		       return false;
-		    }
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
 		mailTable = new JTable(mailTableModel);
 		mailTable.setBounds(20, 35, 760, 400);
-		
-		try {
-			updateTable(mailTableModel);
-		} catch (MessagingException e1) {
-			e1.printStackTrace();
-		}
+
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					createTable(mailTableModel);
+				} catch (MessagingException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}).start();
+
 		inboxScrollPane.setViewportView(mailTable);
 		inboxPanel.add(inboxScrollPane);
-		
-		ListSelectionModel cellSelectionModel = mailTable.getSelectionModel();
-	    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-	    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
-		    @Override
-		    public void valueChanged(ListSelectionEvent event) {
-		        if (mailTable.getSelectedRow() > -1) {
-		            System.out.println(mailTable.getValueAt(mailTable.getSelectedRow(), 0).toString());
-		        }
-		    }
+		ListSelectionModel cellSelectionModel = mailTable.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent event) {
+				if (mailTable.getSelectedRow() > -1) {
+					System.out.println(mailTable.getValueAt(mailTable.getSelectedRow(), 0).toString());
+				}
+			}
 		});
-		
+//		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(mailTable.getModel());
+//		mailTable.setRowSorter(sorter);
+//
+//        List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+//        sortKeys.add(new RowSorter.SortKey(4, SortOrder.ASCENDING));
+//        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+//        sorter.setSortKeys(sortKeys);
 	}
 
-	private void updateTable(DefaultTableModel mailTableModel) throws MessagingException {
+	private void createTable(DefaultTableModel mailTableModel) throws MessagingException {
+		mailTableModel.setColumnCount(0);
+		mailTableModel.setNumRows(0);
 		mailTableModel.addColumn("Subject");
 		mailTableModel.addColumn("Read");
 		mailTableModel.addColumn("From");
@@ -151,8 +172,8 @@ public class MainWindow extends JFrame {
 			} else {
 				recipients = "???";
 			}
-
-			mailTableModel.addRow(new Object[] { m.getSubject(), "no", from, recipients, m.getSentDate() });
+			String sentDate = m.getSentDate() == null ? "???" : new SimpleDateFormat("dd.MM.yyyy hh:mm:ss").format(m.getSentDate());
+			mailTableModel.addRow(new Object[] { m.getSubject(), "no", from, recipients, sentDate });
 
 		}
 
